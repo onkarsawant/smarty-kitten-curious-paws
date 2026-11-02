@@ -142,3 +142,36 @@
     color: var(--color-foreground);
   }
 }
+
+:root {
+  --font-display: "Baloo 2", system-ui, sans-serif;
+  --cream: oklch(0.97 0.03 85);
+  --peach: oklch(0.78 0.14 55);
+  --peach-deep: oklch(0.62 0.16 45);
+  --sky: oklch(0.88 0.06 230);
+  --ink: oklch(0.32 0.06 40);
+}
+@layer components {
+  body { font-family: var(--font-display); background: linear-gradient(180deg, var(--sky), var(--cream)); color: var(--ink); overscroll-behavior: none; }
+  .game-shell { min-height: 100dvh; display: grid; place-items: center; padding: 0.75rem; touch-action: none; user-select: none; }
+  .game-frame { position: relative; width: min(100%, calc((100dvh - 1.5rem) * 16 / 9)); aspect-ratio: 16/9; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 50px -20px color-mix(in oklab, var(--peach-deep) 60%, transparent); border: 4px solid var(--cream); }
+  .game-canvas { width: 100%; height: 100%; display: block; touch-action: none; }
+  .hud { position: absolute; inset: 0.75rem 0.75rem auto; display: flex; gap: 0.5rem; pointer-events: none; }
+  .pill { background: color-mix(in oklab, var(--cream) 90%, transparent); color: var(--ink); border-radius: 999px; padding: 0.15rem 0.9rem; font-weight: 700; font-size: clamp(0.8rem, 2vw, 1.2rem); }
+  .pill-btn { pointer-events: auto; cursor: pointer; }
+  .jump-btn { position: absolute; right: 1rem; bottom: 1rem; width: clamp(64px, 14vw, 110px); aspect-ratio: 1; border-radius: 999px; background: var(--peach); color: var(--cream); font-weight: 800; font-size: clamp(0.9rem, 2.2vw, 1.3rem); border: 4px solid var(--cream); opacity: 0.9; }
+  @media (pointer: fine) { .jump-btn { display: none; } }
+  .overlay { position: absolute; inset: 0; display: grid; place-items: center; background: color-mix(in oklab, var(--sky) 45%, transparent); backdrop-filter: blur(3px); }
+  .panel { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; padding: 1rem; }
+  .kitten-hero { height: clamp(90px, 28vh, 220px); animation: bounce 1.6s ease-in-out infinite; filter: drop-shadow(0 8px 10px color-mix(in oklab, var(--ink) 25%, transparent)); }
+  .title { font-size: clamp(1.8rem, 6vw, 3.6rem); font-weight: 800; line-height: 1; color: var(--peach-deep); text-shadow: 0 3px 0 var(--cream); }
+  .title-sm { font-size: clamp(1.4rem, 4vw, 2.4rem); font-weight: 800; color: var(--peach-deep); }
+  .subtitle { font-size: clamp(1rem, 2.5vw, 1.4rem); font-weight: 700; }
+  .hint { font-size: clamp(0.75rem, 1.6vw, 0.95rem); opacity: 0.8; }
+  .btn-play { background: var(--peach); color: var(--cream); font-weight: 800; font-size: clamp(1.1rem, 3vw, 1.6rem); padding: 0.4rem 2.4rem; border-radius: 999px; box-shadow: 0 5px 0 var(--peach-deep); transition: transform .1s; }
+  .btn-play:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--peach-deep); }
+  .btn-soft { background: var(--cream); color: var(--ink); font-weight: 700; padding: 0.3rem 1.6rem; border-radius: 999px; }
+  .btn-toggle { background: var(--cream); color: var(--ink); border-radius: 999px; padding: 0.15rem 0.8rem; font-size: 0.85rem; font-weight: 700; opacity: 0.6; }
+  .btn-toggle[data-on="true"] { opacity: 1; }
+}
+@keyframes bounce { 50% { transform: translateY(-10px); } }
