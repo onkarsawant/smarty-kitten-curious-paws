@@ -8,7 +8,7 @@ import wave2Img from "@/assets/smarty-wave2.png";
 import sad2Img from "@/assets/smarty-sad2.png";
 import jumpImg from "@/assets/smarty-jump.png";
 import sadImg from "@/assets/smarty-sad.png";
-import wave from "@/assets/smarty-wave.png.asset.json";
+import waveImg from "@/assets/smarty-wave.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
