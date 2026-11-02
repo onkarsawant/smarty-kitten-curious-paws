@@ -41,8 +41,8 @@ export function startMusic() {
   if (musicTimer !== null) return;
   let i = 0;
   musicTimer = window.setInterval(() => {
-    tone(MELODY[i % MELODY.length], 0.22, "triangle", 0.04);
-    if (i % 4 === 0) tone(MELODY[i % MELODY.length] / 4, 0.4, "sine", 0.05);
+    tone(MELODY[i % MELODY.length]!, 0.22, "triangle", 0.04);
+    if (i % 4 === 0) tone(MELODY[i % MELODY.length]! / 4, 0.4, "sine", 0.05);
     i++;
   }, 240);
 }

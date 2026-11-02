@@ -163,7 +163,7 @@ export class Runner {
 
     for (const cl of this.clouds) {
       c.fillStyle = "rgba(255,255,255,0.9)";
-      for (const [dx, dy, rx, ry] of [[0, 0, 50, 22], [30, -14, 34, 22], [-30, -6, 28, 18]]) {
+      for (const [dx, dy, rx, ry] of [[0, 0, 50, 22], [30, -14, 34, 22], [-30, -6, 28, 18]] as const) {
         c.beginPath(); c.ellipse(cl.x + dx * cl.s, cl.y + dy * cl.s, rx * cl.s, ry * cl.s, 0, 0, Math.PI * 2); c.fill();
       }
     }
@@ -183,7 +183,7 @@ export class Runner {
     // flowers on ground
     for (let i = 0; i < 14; i++) {
       const fx = ((i * 97 - this.dist) % W + W) % W;
-      c.fillStyle = ["#ff9ec4", "#ffd34d", "#ffffff"][i % 3];
+      c.fillStyle = ["#ff9ec4", "#ffd34d", "#ffffff"][i % 3]!;
       c.beginPath(); c.arc(fx, GROUND + 4, 5, 0, Math.PI * 2); c.fill();
     }
 
