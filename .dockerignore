@@ -1,0 +1,12 @@
+node_modules
+dist
+.output
+.wrangler
+.vinxi
+.nitro
+.tanstack
+.git
+logs
+*.log
+Dockerfile
+.dockerignore
