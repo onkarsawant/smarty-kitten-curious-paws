@@ -4,7 +4,7 @@ export type GameState = "ready" | "playing" | "paused" | "over";
 export interface Callbacks {
   onScore: (score: number, fish: number, lives: number) => void;
   onOver: (score: number, fish: number) => void;
-  sfx: (name: "jump" | "land" | "fish" | "star" | "hit" | "meow") => void;
+  sfx: (name: "heart" | "jump" | "land" | "fish" | "star" | "hit" | "meow") => void;
 }
 
 interface Thing {
@@ -12,7 +12,7 @@ interface Thing {
   y: number;
   w: number;
   h: number;
-  kind: "box" | "puddle" | "yarn" | "fish" | "star";
+  kind: "box" | "puddle" | "yarn" | "fish" | "star" | "heart";
   vx?: number;
   taken?: boolean;
   spin?: number;
@@ -46,6 +46,7 @@ export class Runner {
   things: Thing[] = [];
   particles: Particle[] = [];
   spawnIn = 1.2;
+  heartsLeft = 3;
   t = 0;
   clouds = Array.from({ length: 6 }, (_, i) => ({ x: i * 200, y: 40 + Math.random() * 120, s: 0.6 + Math.random() * 0.8 }));
   raf = 0;
@@ -66,7 +67,7 @@ export class Runner {
   destroy() { cancelAnimationFrame(this.raf); }
 
   start() {
-    Object.assign(this, { speed: 360, dist: 0, score: 0, fish: 0, lives: 3, y: GROUND, vy: 0, onGround: true, jumpsLeft: 2, invuln: 0, things: [], particles: [], spawnIn: 1.2 });
+    Object.assign(this, { speed: 360, dist: 0, score: 0, fish: 0, lives: 3, y: GROUND, vy: 0, onGround: true, jumpsLeft: 2, invuln: 0, things: [], particles: [], spawnIn: 1.2, heartsLeft: 3 });
     this.state = "playing";
     this.cb.sfx("meow");
     this.cb.onScore(0, 0, 3);
@@ -95,6 +96,12 @@ export class Runner {
     const r = Math.random();
     const x = W + 60;
     const level = Math.min(1, this.dist / 30000);
+    if (this.lives < 3 && this.heartsLeft > 0 && !this.things.some((t) => t.kind === "heart") && Math.random() < 0.25) {
+      this.heartsLeft--;
+      this.things.push({ kind: "heart", x, y: GROUND - 200, w: 40, h: 36 });
+      this.spawnIn = 1;
+      return;
+    }
     if (r < 0.35) this.things.push({ kind: "box", x, y: GROUND - 56, w: 56, h: 56 });
     else if (r < 0.55) this.things.push({ kind: "puddle", x, y: GROUND - 10, w: 110, h: 14 });
     else if (r < 0.55 + 0.2 * (0.4 + level)) this.things.push({ kind: "yarn", x, y: GROUND - 44, w: 44, h: 44, vx: 120, spin: 0 });
@@ -145,12 +152,13 @@ export class Runner {
       if (!hit) continue;
       if (o.kind === "fish") { o.taken = true; this.fish++; this.cb.sfx("fish"); this.burst(o.x, o.y, "#7cc7f0", 8); }
       else if (o.kind === "star") { o.taken = true; this.fish += 5; this.cb.sfx("star"); this.burst(o.x, o.y, "#ffd34d", 16); }
+      else if (o.kind === "heart") { o.taken = true; this.lives = Math.min(3, this.lives + 1); this.cb.sfx("heart"); this.burst(o.x, o.y, "#ff6b8a", 16); }
       else if (this.invuln <= 0) {
         this.lives--; this.invuln = 1.5; this.cb.sfx("hit"); this.burst(px + 40, py + 40, "#ff8a8a", 14);
         if (this.lives <= 0) { this.state = "over"; this.cb.onOver(this.score, this.fish); }
       }
     }
-    this.things = this.things.filter((o) => o.x > -150 && !(o.taken && (o.kind === "fish" || o.kind === "star")));
+    this.things = this.things.filter((o) => o.x > -150 && !(o.taken && o.kind !== "box" && o.kind !== "puddle" && o.kind !== "yarn"));
     this.cb.onScore(this.score, this.fish, this.lives);
   }
 
@@ -232,6 +240,13 @@ export class Runner {
       c.fillStyle = "#5fb4e8"; c.beginPath(); c.ellipse(cx, cy, 18, 11, 0, 0, Math.PI * 2); c.fill();
       c.beginPath(); c.moveTo(cx + 14, cy); c.lineTo(cx + 28, cy - 10); c.lineTo(cx + 28, cy + 10); c.fill();
       c.fillStyle = "#fff"; c.beginPath(); c.arc(cx - 9, cy - 3, 3, 0, Math.PI * 2); c.fill();
+    } else if (o.kind === "heart") {
+      const cx = o.x + 20, cy = o.y + 14 + Math.sin(this.t * 4) * 6, k = 1 + Math.sin(this.t * 8) * 0.08;
+      c.save(); c.translate(cx, cy); c.scale(k, k);
+      c.fillStyle = "#ff6b8a"; c.beginPath(); c.moveTo(0, 18);
+      c.bezierCurveTo(-26, 0, -14, -20, 0, -6); c.bezierCurveTo(14, -20, 26, 0, 0, 18); c.fill();
+      c.fillStyle = "rgba(255,255,255,0.7)"; c.beginPath(); c.arc(-8, -5, 4, 0, Math.PI * 2); c.fill();
+      c.restore();
     } else if (o.kind === "star") {
       const cx = o.x + 18, cy = o.y + 18 + Math.sin(this.t * 4) * 6;
       c.fillStyle = "#ffd34d"; c.beginPath();

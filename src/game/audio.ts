@@ -29,6 +29,7 @@ export function playSfx(name: string) {
     case "land": tone(140, 0.08, "sine", 0.12, 0.7); break;
     case "fish": tone(880, 0.08, "square", 0.06); tone(1320, 0.12, "square", 0.06, 1, 0.06); break;
     case "star": [660, 880, 1100, 1320].forEach((f, i) => tone(f, 0.15, "triangle", 0.1, 1, i * 0.07)); break;
+    case "heart": [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.18, "sine", 0.12, 1, i * 0.08)); break;
     case "hit": tone(300, 0.3, "sawtooth", 0.1, 0.4); break;
     case "meow": tone(700, 0.12, "sine", 0.15, 1.3); tone(900, 0.3, "sine", 0.15, 0.6, 0.1); break;
     case "over": [523, 440, 349, 262].forEach((f, i) => tone(f, 0.3, "triangle", 0.12, 1, i * 0.2)); break;
