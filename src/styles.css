@@ -164,6 +164,7 @@
   .overlay { position: absolute; inset: 0; display: grid; place-items: center; background: color-mix(in oklab, var(--sky) 45%, transparent); backdrop-filter: blur(3px); }
   .panel { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; padding: 1rem; }
   .kitten-hero { height: clamp(90px, 28vh, 220px); animation: bounce 1.6s ease-in-out infinite; filter: drop-shadow(0 8px 10px color-mix(in oklab, var(--ink) 25%, transparent)); }
+  .kitten-still { height: clamp(90px, 28vh, 220px); filter: drop-shadow(0 8px 10px color-mix(in oklab, var(--ink) 25%, transparent)); }
   .title { font-size: clamp(1.8rem, 6vw, 3.6rem); font-weight: 800; line-height: 1; color: var(--peach-deep); text-shadow: 0 3px 0 var(--cream); }
   .title-sm { font-size: clamp(1.4rem, 4vw, 2.4rem); font-weight: 800; color: var(--peach-deep); }
   .subtitle { font-size: clamp(1rem, 2.5vw, 1.4rem); font-weight: 700; }

@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { Runner, type GameState } from "@/game/engine";
 import { playSfx, startMusic, stopMusic } from "@/game/audio";
 import runImg from "@/assets/smarty-run.png";
+import run2Img from "@/assets/smarty-run2.png";
+import wave2Img from "@/assets/smarty-wave2.png";
+import sad2Img from "@/assets/smarty-sad2.png";
 import jumpImg from "@/assets/smarty-jump.png";
 import sadImg from "@/assets/smarty-sad.png";
 import wave from "@/assets/smarty-wave.png.asset.json";
@@ -56,10 +59,10 @@ function Game() {
 
   useEffect(() => {
     let r: Runner | null = null;
-    Promise.all([loadImg(runImg), loadImg(jumpImg)])
-      .then(([a, b]) => {
+    Promise.all([loadImg(runImg), loadImg(run2Img), loadImg(jumpImg), loadImg(wave2Img), loadImg(sadImg), loadImg(sad2Img)])
+      .then(([a, a2, b]) => {
         if (!canvasRef.current) return;
-        r = new Runner(canvasRef.current, a, b, {
+        r = new Runner(canvasRef.current, a!, a2!, b!, {
           onScore: (score, fish, lives) => setHud((h) => (h.score === score && h.fish === fish && h.lives === lives ? h : { score, fish, lives })),
           onOver: (score) => {
             setState("over");
@@ -125,7 +128,7 @@ function Game() {
 
         {state === "ready" && (
           <Overlay>
-            <img src={wave.url} alt="Smarty waving" className="kitten-hero" />
+            <FlipBook frames={[wave.url, wave2Img]} ms={450} alt="Smarty waving" className="kitten-hero" />
             <h1 className="title">Smarty the Kitten</h1>
             <p className="subtitle">Endless Run</p>
             <button className="btn-play" onClick={start}>Play</button>
@@ -147,7 +150,7 @@ function Game() {
 
         {state === "over" && (
           <Overlay>
-            <img src={sadImg} alt="Sad Smarty" className="kitten-hero" />
+            <FlipBook frames={[sadImg, sad2Img]} ms={700} alt="Sad Smarty" className="kitten-still" />
             <h2 className="title-sm">Oh no, Smarty bumped!</h2>
             <p className="subtitle">Score {hud.score} · 🐟 {hud.fish}</p>
             <p className="hint">{newBest ? "🎉 New best score!" : `Best: ${best}`}</p>
@@ -158,6 +161,15 @@ function Game() {
       </div>
     </main>
   );
+}
+
+function FlipBook({ frames, ms, alt, className }: { frames: string[]; ms: number; alt: string; className: string }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setI((n) => (n + 1) % frames.length), ms);
+    return () => clearInterval(id);
+  }, [frames.length, ms]);
+  return <img src={frames[i]} alt={alt} className={className} />;
 }
 
 function Overlay({ children }: { children: React.ReactNode }) {
