@@ -163,11 +163,9 @@ export class Runner {
 
     for (const cl of this.clouds) {
       c.fillStyle = "rgba(255,255,255,0.9)";
-      c.beginPath();
-      c.ellipse(cl.x, cl.y, 50 * cl.s, 22 * cl.s, 0, 0, Math.PI * 2);
-      c.ellipse(cl.x + 30 * cl.s, cl.y - 14 * cl.s, 34 * cl.s, 22 * cl.s, 0, 0, Math.PI * 2);
-      c.ellipse(cl.x - 30 * cl.s, cl.y - 6 * cl.s, 28 * cl.s, 18 * cl.s, 0, 0, Math.PI * 2);
-      c.fill();
+      for (const [dx, dy, rx, ry] of [[0, 0, 50, 22], [30, -14, 34, 22], [-30, -6, 28, 18]]) {
+        c.beginPath(); c.ellipse(cl.x + dx * cl.s, cl.y + dy * cl.s, rx * cl.s, ry * cl.s, 0, 0, Math.PI * 2); c.fill();
+      }
     }
 
     // hills (parallax)
