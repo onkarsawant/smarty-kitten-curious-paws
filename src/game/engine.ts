@@ -29,6 +29,7 @@ const JUMP_V = -1000;
 export class Runner {
   ctx: CanvasRenderingContext2D;
   run: HTMLImageElement;
+  run2: HTMLImageElement;
   jump: HTMLImageElement;
   cb: Callbacks;
   state: GameState = "ready";
@@ -50,11 +51,12 @@ export class Runner {
   raf = 0;
   last = 0;
 
-  constructor(canvas: HTMLCanvasElement, run: HTMLImageElement, jump: HTMLImageElement, cb: Callbacks) {
+  constructor(canvas: HTMLCanvasElement, run: HTMLImageElement, run2: HTMLImageElement, jump: HTMLImageElement, cb: Callbacks) {
     canvas.width = W;
     canvas.height = H;
     this.ctx = canvas.getContext("2d")!;
     this.run = run;
+    this.run2 = run2;
     this.jump = jump;
     this.cb = cb;
     this.loop = this.loop.bind(this);
@@ -192,13 +194,12 @@ export class Runner {
     // kitten
     const blink = this.invuln > 0 && Math.floor(this.t * 12) % 2 === 0;
     if (!blink) {
-      const img = this.onGround ? this.run : this.jump;
-      const bob = this.onGround && this.state === "playing" ? Math.abs(Math.sin(this.t * 14)) * 6 : 0;
+      const img = !this.onGround ? this.jump : this.state === "playing" && Math.floor(this.t * 9) % 2 ? this.run2 : this.run;
+      const bob = this.onGround && this.state === "playing" ? Math.abs(Math.sin(this.t * 9 * Math.PI)) * 5 : 0;
       const h = 112, w = h * (img.width / img.height || 0.75);
       c.save();
       c.translate(170, this.y - bob);
-      if (this.onGround) c.rotate(Math.sin(this.t * 14) * 0.04);
-      c.drawImage(img, -w / 2, -h + 8, w, h);
+            c.drawImage(img, -w / 2, -h + 8, w, h);
       c.restore();
     }
 
