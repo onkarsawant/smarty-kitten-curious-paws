@@ -128,7 +128,7 @@ function Game() {
 
         {state === "ready" && (
           <Overlay>
-            <FlipBook frames={[wave.url, wave2Img]} ms={450} alt="Smarty waving" className="kitten-hero" />
+            <FlipBook frames={[wave.url, wave2Img]} ms={450} alt="Smarty waving" className="kitten-still" />
             <h1 className="title">Smarty the Kitten</h1>
             <p className="subtitle">Endless Run</p>
             <button className="btn-play" onClick={start}>Play</button>
