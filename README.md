@@ -34,3 +34,22 @@ docker run --rm -p 3000:3000 smarty-kitten
 
 Then open http://localhost:3000. The image builds the app as a standalone Node server (`NITRO_PRESET=node-server`) and serves it with `node dist/server/index.mjs`. Change the port with `-e PORT=<port>` and `-p <port>:<port>`.
 
+## Host on GitHub Pages
+
+The repository includes `.github/workflows/deploy-pages.yml`, which builds the game as a fully static site and publishes it to GitHub Pages on every push to `main`.
+
+One-time setup in GitHub:
+
+1. Open the repository → **Settings → Pages**.
+2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+
+That's it — the site goes live at `https://<user>.github.io/<repo>/` and updates on each push. The workflow detects the repository name automatically, so no path configuration is needed.
+
+To build the static site locally instead:
+
+```sh
+GITHUB_PAGES_BUILD=1 VITE_BASE_PATH=/<repo-name>/ bun run build
+# output is in dist/client — host it as plain static files
+```
+
+
