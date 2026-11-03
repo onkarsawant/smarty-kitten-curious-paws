@@ -29,6 +29,7 @@ export default defineConfig({
         }
       : {}),
   },
+  nitro: nitroPreset && nitroPreset !== "cloudflare-module" ? { preset: nitroPreset } : undefined,
   vite: {
     base: basePath,
   },
