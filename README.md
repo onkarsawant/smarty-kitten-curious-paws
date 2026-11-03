@@ -32,5 +32,5 @@ docker build -t smarty-kitten .
 docker run --rm -p 3000:3000 smarty-kitten
 ```
 
-Then open http://localhost:3000. The image builds the app as a standalone Node server (`NITRO_PRESET=node-server`) and serves it with `node .output/server/index.mjs`. Change the port with `-e PORT=<port>` and `-p <port>:<port>`.
+Then open http://localhost:3000. The image builds the app as a standalone Node server (`NITRO_PRESET=node-server`) and serves it with `node dist/server/index.mjs`. Change the port with `-e PORT=<port>` and `-p <port>:<port>`.
 
