@@ -22,7 +22,7 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
     // Pages build: the game is fully client-side with a single route, so render
-    // "/" once at build time and ship the static output (dist/client).
+    // "/" once at build time for the static GitHub Pages deployment.
     ...(isPagesBuild
       ? {
           pages: [{ path: "/" }],

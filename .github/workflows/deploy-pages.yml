@@ -28,8 +28,11 @@ jobs:
           # A project site is served at https://<user>.github.io/<repo>/,
           # so the build must prefix all asset URLs with the repo name.
           VITE_BASE_PATH: /${{ github.event.repository.name }}/
-      - name: Serve the game for wrong paths too
-        run: cp dist/client/index.html dist/client/404.html
+      - name: Prepare static site
+        run: |
+          mkdir -p dist/client
+          cp -R .output/public/. dist/client/
+          cp dist/client/index.html dist/client/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/client

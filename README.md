@@ -49,7 +49,7 @@ To build the static site locally instead:
 
 ```sh
 GITHUB_PAGES_BUILD=1 VITE_BASE_PATH=/<repo-name>/ bun run build
-# output is in dist/client — host it as plain static files
+# output is in .output/public — host it as plain static files
 ```
 
-
+The GitHub Actions workflow stages that output in `dist/client` and publishes that folder.
