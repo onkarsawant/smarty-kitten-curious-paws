@@ -8,12 +8,13 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 // GitHub Pages builds set GITHUB_PAGES_BUILD=1 and VITE_BASE_PATH=/<repo-name>/
 // (a project site is served under /<repo>/, not at the domain root).
-const isPagesBuild = process.env.GITHUB_PAGES_BUILD === "1";
-const basePath = isPagesBuild ? process.env.VITE_BASE_PATH || "/" : "/";
+const env = process.env;
+const isPagesBuild = env["GITHUB_PAGES_BUILD"] === "1";
+const basePath = isPagesBuild ? env["VITE_BASE_PATH"] || "/" : "/";
 
 // Docker builds set NITRO_PRESET=node-server; nitro 3 no longer reads that env
 // var itself, so forward it here (its output lands in .output/).
-const nitroPreset = process.env.NITRO_PRESET;
+const nitroPreset = env["NITRO_PRESET"];
 
 export default defineConfig({
   tanstackStart: {
@@ -21,7 +22,7 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
     // Pages build: the game is fully client-side with a single route, so render
-    // "/" once at build time and ship the static output (.output/public).
+    // "/" once at build time and ship the static output (dist/client).
     ...(isPagesBuild
       ? {
           pages: [{ path: "/" }],
@@ -29,7 +30,7 @@ export default defineConfig({
         }
       : {}),
   },
-  nitro: nitroPreset && nitroPreset !== "cloudflare-module" ? { preset: nitroPreset } : undefined,
+  ...(nitroPreset && nitroPreset !== "cloudflare-module" ? { nitro: { preset: nitroPreset } } : {}),
   vite: {
     base: basePath,
   },
