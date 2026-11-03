@@ -159,6 +159,14 @@ function Game() {
           </Overlay>
         )}
       </div>
+      <div className="rotate-prompt" role="status">
+        <svg className="rotate-icon" viewBox="0 0 36 40" aria-hidden="true">
+          <rect x="9" y="2" width="18" height="36" rx="3" fill="none" stroke="currentColor" strokeWidth="2.5" />
+          <path d="M15 32h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+        <h1 className="rotate-title">Rotate your device</h1>
+        <p className="rotate-hint">Smarty is best played in landscape.</p>
+      </div>
     </main>
   );
 }
